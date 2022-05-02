@@ -1,5 +1,7 @@
 @extends ('tvshop\layout')
 
+{{--@dd(auth()->user())--}}
+
 @section('content')
     <h1>TV Shop</h1>
 
@@ -23,6 +25,10 @@
                 </ul>
             </div>
         @endforeach
+    </div>
+
+    <div>
+        {{ $allTv->links()  }}
     </div>
 
 @endsection

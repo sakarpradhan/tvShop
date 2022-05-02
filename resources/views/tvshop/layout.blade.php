@@ -409,7 +409,7 @@
             border: #1a202c solid 2px;
         }
 
-        .flex-container >div > img {
+        .flex-container > div > img {
             width: 216px;
         }
 
@@ -421,11 +421,27 @@
 </head>
 <body class="antialiased">
 <nav>
-    <ul><a href="/">List</a></ul>
+    <ul><a href="/">Index</a></ul>
     <ul><a href="/create">Create</a></ul>
+
+    @auth
+        <form method="POST" action="/logout">
+            @csrf
+            <button type="submit">Logout {{ auth()->user()->name }}</button>
+        </form>
+    @else
+        <ul><a href="/register">Register User</a></ul>
+        <ul><a href="/login">Login</a></ul>
+    @endauth
 </nav>
 
 @yield('content')
+
+<footer>
+    @if (session()->has('success'))
+        <p>{{ session('success') }}</p>
+    @endif
+</footer>
 
 </body>
 </html>

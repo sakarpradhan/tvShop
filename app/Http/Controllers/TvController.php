@@ -15,7 +15,7 @@ class TvController extends Controller
      */
     public function index()
     {
-        return view('tvshop\list', ['allTv' => Tv::all()]);
+        return view('tvshop\list', ['allTv' => Tv::latest()->simplePaginate()]);
     }
 
     /**
@@ -44,7 +44,7 @@ class TvController extends Controller
 
         $attributes['path'] = request()->file('path')->store('tv_images');
 
-//        ddd($attributes);
+        session()->flash('success', "New TV, {$attributes['model']}, added to the Shop.");
 
         Tv::create($attributes);
 
