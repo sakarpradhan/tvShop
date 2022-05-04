@@ -15,7 +15,7 @@ class TvController extends Controller
      */
     public function index()
     {
-        return view('tvshop\list', ['allTv' => Tv::latest()->simplePaginate()]);
+        return view('tvshop\list', ['allTv' => Tv::latest()->simplePaginate(5)]);
     }
 
     /**

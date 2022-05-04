@@ -422,7 +422,14 @@
 <body class="antialiased">
 <nav>
     <ul><a href="/">Index</a></ul>
+
+    @can('admin')
     <ul><a href="/create">Create</a></ul>
+    @endcan
+
+    @can('customer')
+    <ul><a href="/cart">Cart ({{auth()->user()->cart()->count()}})</a></ul>
+    @endcan
 
     @auth
         <form method="POST" action="/logout">

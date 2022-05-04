@@ -28,6 +28,8 @@ class SessionController extends Controller
             return redirect('/');
         }
 
+
+
         // auth fails
         return back()->withErrors(['email' => 'Credentials mismatch. Please try again.']);
     }

@@ -16,11 +16,4 @@ class Tv extends Model
     protected $fillable = [
         'model', 'price', 'path'
     ];
-
-    // public function __construct($model, $price, $path)
-    // {
-    //     $this->model = $model;
-    //     $this->price = $price;
-    //     $this->path = $path;
-    // }
 }

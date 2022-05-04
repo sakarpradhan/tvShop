@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
@@ -17,8 +18,11 @@ use App\Http\Controllers\TvController;
 */
 
 Route::get('/', [TvController::class, 'index'])->name('home');
-Route::get('/create', [TvController::class, 'create']);
-Route::get('/edit/{tv}', [TvController::class, 'edit']);
+Route::get('/create', [TvController::class, 'create'])->middleware('can:admin');
+Route::get('/edit/{tv}', [TvController::class, 'edit'])->middleware('can:admin');
+Route::post('/store', [TvController::class, 'store'])->middleware('can:admin');
+Route::post('/destroy', [TvController::class, 'destroy'])->middleware('can:admin');
+Route::patch('/update/{tv}', [TvController::class, 'update'])->middleware('can:admin');
 
 Route::get('/register', [RegisterController::class, 'create'])->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])->middleware('guest');
@@ -27,6 +31,5 @@ Route::get('/login', [SessionController::class, 'create'])->middleware('guest');
 Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
-Route::post('/store', [TvController::class, 'store']);
-Route::post('/destroy', [TvController::class, 'destroy']);
-Route::patch('/update/{tv}', [TvController::class, 'update']);
+Route::get('/cart', [CartController::class, 'index'])->middleware('can:customer');
+Route::get('/cart/add/{tv}', [CartController::class, 'store'])->middleware('can:customer');

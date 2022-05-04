@@ -19,6 +19,11 @@
         <ul><p>{{ $message }}</p></ul>
         @enderror
 
+        <ul>Admin: <input type="checkbox" name="admin" value="1"></ul>
+        @error('admin')
+        <ul><p>{{ $message }}</p></ul>
+        @enderror
+
         <ul>
             <button type="submit">Create</button>
         </ul>

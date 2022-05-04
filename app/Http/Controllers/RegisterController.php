@@ -20,8 +20,10 @@ class RegisterController extends Controller
         $attributes = request()->validate([
             'name'      => ['required'],
             'email'     => ['required', 'email', Rule::unique('users', 'email')],
-            'password'  => ['required', 'min:5']
+            'password'  => ['required', 'min:5'],
+            'admin'     => []
         ]);
+
 
         $attributes['password'] = bcrypt($attributes['password']);
 
