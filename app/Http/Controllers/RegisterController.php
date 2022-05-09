@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserFormRequest;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 
@@ -13,17 +14,12 @@ class RegisterController extends Controller
         return view('tvshop.register.create');
     }
 
-    public function store()
+    public function store(UserFormRequest $request)
     {
         // register the user
         // validate the data received through the form
-        $attributes = request()->validate([
-            'name'      => ['required'],
-            'email'     => ['required', 'email', Rule::unique('users', 'email')],
-            'password'  => ['required', 'min:5'],
-            'admin'     => []
-        ]);
-
+        // Retrieve the validated input data...
+        $attributes = $request->validated();
 
         $attributes['password'] = bcrypt($attributes['password']);
 

@@ -9,10 +9,6 @@ class Tv extends Model
 {
     use HasFactory;
 
-//    protected $model;
-//    protected $price;
-//    protected $path;
-
     protected $fillable = [
         'model', 'price', 'path'
     ];

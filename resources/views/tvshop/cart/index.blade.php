@@ -25,7 +25,7 @@
         @endforeach
         <tr>
             <td colspan="3">Total</td>
-            <td>{{$total}}</td>
+            <td>{{ $total }}</td>
         </tr>
     </table>
     <form method="POST" action="/cart/checkout">

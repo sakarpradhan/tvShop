@@ -7,8 +7,20 @@
         @csrf
         @method('PATCH')
         <ul>Model: <input name="model" value="{{$tv->model}}"/></ul>
+        @error('model')
+        <ul>{{ $message }}</ul>
+        @enderror
+
         <ul>Price: <input name="price" value="{{$tv->price}}"/></ul>
+        @error('price')
+        <ul>{{ $message }}</ul>
+        @enderror
+
         <ul>Image: <input type="file" name="path"/></ul>
+        @error('path')
+        <ul>{{ $message }}</ul>
+        @enderror
+
         <ul><img width="150px" src="{{ asset('storage/' . $tv->path) }}" alt="Current picture: {{$tv->model}}"></ul>
         <p>
             <button type="submit">Update</button>

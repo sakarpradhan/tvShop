@@ -428,13 +428,13 @@
     @endcan
 
     @can('customer')
-    <ul><a href="/cart">Cart ({{auth()->user()->cart()->count()}})</a></ul>
+    <ul><a href="/cart">Cart ({{getUserDetails()->cart()->count()}})</a></ul>
     @endcan
 
     @auth
         <form method="POST" action="/logout">
             @csrf
-            <button type="submit">Logout {{ auth()->user()->name }}</button>
+            <button type="submit">Logout {{ getUserDetails()->name }}</button>
         </form>
     @else
         <ul><a href="/register">Register User</a></ul>

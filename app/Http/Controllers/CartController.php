@@ -10,7 +10,7 @@ class CartController extends Controller
     // show all
     public function index()
     {
-        $cartItems = auth()->user()->cart;
+        $cartItems = getUserDetails()->cart;
         $total = 0;
 
         foreach ($cartItems as $item)
@@ -27,13 +27,13 @@ class CartController extends Controller
     // create new record
     public function store()
     {
-        $userCart = auth()->user()->cart;
+        $userCart = getUserDetails()->cart;
         if ($userCart->contains('tv_id', request('tv'))) {
             $cart_id = $userCart->where('tv_id', request('tv'))->pluck('id');
             $this->update($cart_id);
         } else {
             $attributes = [
-                'user_id' => auth()->user()->id,
+                'user_id' => getUserDetails()->id,
                 'tv_id' => request('tv')
             ];
             Cart::create($attributes);
@@ -59,7 +59,7 @@ class CartController extends Controller
     // customer buys, cart is cleared
     public function checkout()
     {
-        foreach (auth()->user()->cart as $cart)
+        foreach (getUserDetails()->cart as $cart)
         {
             $cart->delete();
         }
