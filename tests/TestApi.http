@@ -1,0 +1,13 @@
+GET http://localhost:8000/api/tv
+Accept: application/json
+
+###
+
+GET http://localhost:8000/api/tv/5
+Accept: application/json
+
+###
+GET http://localhost:8000/api/destroy/10
+Accept: application/json
+
+###
