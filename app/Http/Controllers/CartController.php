@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Helper\UserHelper;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -10,7 +11,7 @@ class CartController extends Controller
     // show all
     public function index()
     {
-        $cartItems = getUserDetails()->cart;
+        $cartItems = UserHelper::getUserDetails()->cart;
         $total = 0;
 
         foreach ($cartItems as $item)
@@ -27,13 +28,13 @@ class CartController extends Controller
     // create new record
     public function store()
     {
-        $userCart = getUserDetails()->cart;
+        $userCart = UserHelper::getUserDetails()->cart;
         if ($userCart->contains('tv_id', request('tv'))) {
             $cart_id = $userCart->where('tv_id', request('tv'))->pluck('id');
             $this->update($cart_id);
         } else {
             $attributes = [
-                'user_id' => getUserDetails()->id,
+                'user_id' => UserHelper::getUserDetails()->id,
                 'tv_id' => request('tv')
             ];
             Cart::create($attributes);
@@ -59,7 +60,7 @@ class CartController extends Controller
     // customer buys, cart is cleared
     public function checkout()
     {
-        foreach (getUserDetails()->cart as $cart)
+        foreach (UserHelper::getUserDetails()->cart as $cart)
         {
             $cart->delete();
         }

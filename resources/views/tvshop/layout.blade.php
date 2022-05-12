@@ -424,17 +424,18 @@
     <ul><a href="/">Index</a></ul>
 
     @can('admin')
-    <ul><a href="/create">Create</a></ul>
+        <ul><a href="/create">Create</a></ul>
     @endcan
 
     @can('customer')
-    <ul><a href="/cart">Cart ({{getUserDetails()->cart()->count()}})</a></ul>
+{{--        <ul><a href="/cart">Cart ({{getUserDetails()->cart()->count()}})</a></ul>--}}
+        <ul><a href="/cart">Cart ({{ App\Helper\UserHelper::getUserDetails()->cart()->count()}})</a></ul>
     @endcan
 
     @auth
         <form method="POST" action="/logout">
             @csrf
-            <button type="submit">Logout {{ getUserDetails()->name }}</button>
+            <button type="submit">Logout {{ App\Helper\UserHelper::getUserDetails()->name }}</button>
         </form>
     @else
         <ul><a href="/register">Register User</a></ul>

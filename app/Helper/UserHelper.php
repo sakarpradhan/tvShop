@@ -1,20 +1,18 @@
 <?php
 
+namespace App\Helper;
+
 use Illuminate\Support\Facades\Auth;
 
-if (!function_exists('getUserDetails'))
+class UserHelper
 {
-    function getUserDetails()
+    public static function getUserDetails()
     {
-        $user = Auth::user();
-        return $user;
+        return Auth::user();
     }
-}
 
-if (!function_exists('isUserAdmin'))
-{
-    function isUserAdmin()
+    public static function isUserAdmin()
     {
-        return (Auth::user()->admin) ? true : false;
+        return (bool)Auth::user()->admin;
     }
 }

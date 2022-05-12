@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use App\Helper\UserHelper;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,11 +26,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Gate::define('admin', function() {
-            return isUserAdmin();
+            return UserHelper::isUserAdmin();
         });
 
         Gate::define('customer', function() {
-            return !isUserAdmin();
+            return !UserHelper::isUserAdmin();
         });
 
 //        Gate::define('admin', function(User $user) {

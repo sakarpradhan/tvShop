@@ -18,7 +18,6 @@ class Cart extends Model
 
     public function tv()
     {
-//        return $this->belongsTo(Tv::class);
         return $this->belongsTo(Tv::class);
     }
 }

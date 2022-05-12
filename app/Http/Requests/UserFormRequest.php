@@ -15,7 +15,7 @@ class UserFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check() ? false : true;
+        return (bool)!Auth::check();
     }
 
     /**
