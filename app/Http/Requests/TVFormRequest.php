@@ -14,7 +14,8 @@ class TVFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return (bool)UserHelper::isUserAdmin();
+//        return (bool)UserHelper::isUserAdmin();
+        return true;
     }
 
     /**

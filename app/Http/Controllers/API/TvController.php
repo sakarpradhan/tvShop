@@ -7,7 +7,7 @@ use App\Http\Requests\TVFormRequest;
 use App\Models\Tv;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Validation\ValidationException;
 
 class TvController extends Controller
 {
@@ -36,7 +36,17 @@ class TvController extends Controller
 
     public function store(TVFormRequest $request)
     {
-        $attributes = $request->validated();
+        // exception handling not required,
+        //header->accept->application/json, required in request_body
+//        try {
+            $attributes = $request->validated();
+//        } catch (ValidationException $e) {
+//            return response([
+//                'status'    => '422',
+//                'error'     => 'Validation error',
+//                'specific'  => $e
+//            ], 422);
+//        }
 
         $attributes['path'] = request()->file('path')->store('tv_images');
 

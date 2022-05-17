@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\TvController;
@@ -22,7 +23,10 @@ use App\Http\Controllers\API\TvController;
 Route::get('/tv', [TvController::class, 'index']);
 Route::get('/tv/{tv}', [TvController::class, 'show']);
 
-Route::post('/store', [TvController::class, 'store']);
-Route::put('/update/{tv}', [TvController::class, 'update']);
+Route::post('/store', [TvController::class, 'store'])->middleware(['auth:sanctum', 'can:admin']);
+Route::put('/update/{tv}', [TvController::class, 'update'])->middleware(['auth:sanctum', 'can:admin']);
+Route::delete('/destroy/{tv}', [TvController::class, 'destroy'])->middleware(['auth:sanctum', 'can:admin']);
 
-Route::delete('/destroy/{tv}', [TvController::class, 'destroy']);
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [RegisterController::class, 'login']);
+Route::post('/logout', [RegisterController::class, 'logout'])->middleware('auth:sanctum');
