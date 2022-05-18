@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\TimerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TvController;
 
@@ -35,3 +36,6 @@ Route::get('/cart', [CartController::class, 'index'])->middleware('can:customer'
 Route::get('/cart/add/{tv}', [CartController::class, 'store'])->middleware('can:customer');
 Route::get('/cart/delete/{cart}', [CartController::class, 'destroy'])->middleware('can:customer');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->middleware('can:customer');
+
+Route::get('/timer', [TimerController::class, 'create'])->middleware('can:admin');
+Route::post('/timer', [TimerController::class, 'store'])->middleware('can:admin');

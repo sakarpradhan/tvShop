@@ -4,17 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TVFormRequest;
 use App\Models\Tv;
+use App\Models\Timer;
 use Illuminate\Support\Facades\Storage;
 
 class TvController extends Controller
 {
+    public function filterTv()
+    {
+        $CURRENT_TIME = now('+05:45')->toTimeString();
+        $CURRENT_DATETIME = now('+05:45')->toDateTimeString();
+
+        $tvToDelete = Timer::whereTime('remove_after', '<', $CURRENT_DATETIME)->pluck('tv_id')->toArray();
+
+        foreach ($tvToDelete as $tv)
+        {
+            if (Tv::find($tv)->timer()->exists())
+            {
+                Tv::find($tv)->timer()->delete();
+            }
+            $this->destroy($tv);
+        }
+
+        $tvWithTimer = Timer::whereTime('display_start', '<=', $CURRENT_TIME)
+            ->whereTime('display_end', '>=', $CURRENT_TIME)
+            ->pluck('tv_id')->toArray();
+
+        $tvWithoutTimer = Tv::whereNotIn('id', Timer::pluck('tv_id'))->pluck('id')->toArray();
+
+        return array_merge($tvWithTimer, $tvWithoutTimer);
+    }
+
     /**
      * Display a listing of the resource.
      *
      */
     public function index()
     {
-        return view('tvshop\list', ['allTv' => Tv::latest()->simplePaginate(5)]);
+        return view(
+            'tvshop\list',
+            ['allTv' => Tv::whereIn('id', $this->filterTv())->simplePaginate(5)]
+        );
     }
 
     /**
@@ -41,29 +70,19 @@ class TvController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     */
-    public function show(Tv $tv)
-    {
-        //
-    }
-
     public function edit(Tv $tv)
     {
         return view('tvshop/edit', ['tv' => $tv]);
     }
+
     public function update(TVFormRequest $request, Tv $tv)
     {
         $attributes = $request->validated();
 
-        if(isset($attributes['path']))
-        {
+        if (isset($attributes['path'])) {
             $attributes['path'] = request()->file('path')->store('tv_images');
             $oldImg = Tv::where('id', $tv->id)->first()->path;
-            if(Storage::exists($oldImg))
-            {
+            if (Storage::exists($oldImg)) {
                 Storage::delete($oldImg);
             }
         }
@@ -73,12 +92,19 @@ class TvController extends Controller
         return redirect('/');
     }
 
-    public function destroy(Tv $tv)
+    public function destroy($tv)
     {
-        $img = Tv::where('id', request()->delete_tv_id)->first()->path;
+        if (request()->delete_tv_id)
+        {
+            $tv = request()->delete_tv_id;
+        }
+
+        $img = Tv::where('id', $tv)->first()->path;
         if (Storage::exists($img)) Storage::delete($img);
 
-        Tv::where('id', request()->delete_tv_id)->delete();
+        Tv::where('id', $tv)->delete();
+
         return redirect('/');
     }
+
 }

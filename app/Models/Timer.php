@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tv extends Model
+class Timer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'model', 'price', 'path'
-    ];
+    protected $table = 'tvs_timer';
 
-    public function timer()
-    {
-        return $this->hasOne(Timer::class, 'tv_id');
-    }
+    protected $fillable = [
+        'tv_id', 'display_start', 'display_end', 'remove_after'
+    ];
 }

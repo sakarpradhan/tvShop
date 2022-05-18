@@ -425,10 +425,11 @@
 
     @can('admin')
         <ul><a href="/create">Create</a></ul>
+        <ul><a href="/timer">Set Timer</a></ul>
     @endcan
 
     @can('customer')
-{{--        <ul><a href="/cart">Cart ({{getUserDetails()->cart()->count()}})</a></ul>--}}
+        {{--<ul><a href="/cart">Cart ({{getUserDetails()->cart()->count()}})</a></ul>--}}
         <ul><a href="/cart">Cart ({{ App\Helper\UserHelper::getUserDetails()->cart()->count()}})</a></ul>
     @endcan
 
