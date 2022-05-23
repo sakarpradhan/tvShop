@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Helper\UserHelper;
+use App\Models\Tv;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    // show all
-    public function index()
+    // show all cart item for that customer
+    public function show()
     {
         $cartItems = UserHelper::getUserDetails()->cart;
         $total = 0;
@@ -19,7 +21,7 @@ class CartController extends Controller
             $total += ($item->quantity * $item->tv->price);
         }
 
-        return view('tvshop.cart.index', [
+        return view('tvshop.cart.show', [
             'carts' => $cartItems,
             'total' => $total
         ]);
@@ -28,6 +30,15 @@ class CartController extends Controller
     // create new record
     public function store()
     {
+        try
+        {
+            Tv::findOrFail(response('tv'));
+        }
+        catch (ModelNotFoundException $error)
+        {
+            return back()->with('success', 'Product invalid or not found.');
+        }
+
         $userCart = UserHelper::getUserDetails()->cart;
         if ($userCart->contains('tv_id', request('tv'))) {
             $cart_id = $userCart->where('tv_id', request('tv'))->pluck('id');

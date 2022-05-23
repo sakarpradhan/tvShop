@@ -5,41 +5,61 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TVFormRequest;
 use App\Models\Tv;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\TvResource;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TvController extends Controller
 {
     public function index()
     {
-        $tvs = Tv::all();
-        foreach ($tvs as $tv) {
-            $tv['path'] = asset('storage/' . $tv['path']);
+        try {
+            $data = TvResource::collection(Tv::all());
+            $response = [
+                'status'    => 200,
+                'message'   => 'Records found.',
+                'data'      => $data
+            ];
         }
-        return response()->json($tvs);
+        catch (\Exception $error)
+        {
+            $response = [
+                'status'    => 204,
+                'message'   => $error->getMessage(),
+                'data'      => []
+            ];
+        }
+
+        return response()->json($response);
+
     }
 
     public function show($tv)
     {
         try {
-            $tv = Tv::findOrFail($tv);
-            $tv['path'] = asset('storage/' . $tv['path']);
-            return response()->json($tv);
+            $response = [
+                'status'    =>  200,
+                'message'   =>  'Record found.',
+                'data'      =>  new TvResource(Tv::findOrFail($tv))
+            ];
         } catch (ModelNotFoundException $error) {
-            return response([
-                'status' => '404',
-                'error' => 'Record not found.'
-            ], 404);
+            $response = [
+                'status'    => 204,
+                'message'   => 'Record not found.',
+                'data'      => []
+            ];
+
         }
+        return response()->json($response); // adding status 204 returns empty json
     }
 
     public function store(TVFormRequest $request)
     {
-        // exception handling not required,
-        //header->accept->application/json, required in request_body
+//         exception handling not required,
+//        header->accept->application/json, required in request_body
 //        try {
-            $attributes = $request->validated();
+        $attributes = $request->validated();
 //        } catch (ValidationException $e) {
 //            return response([
 //                'status'    => '422',

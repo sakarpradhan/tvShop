@@ -32,7 +32,7 @@ Route::get('/login', [SessionController::class, 'create'])->middleware('guest');
 Route::post('/login', [SessionController::class, 'store'])->middleware('guest');
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
-Route::get('/cart', [CartController::class, 'index'])->middleware('can:customer');
+Route::get('/cart', [CartController::class, 'show'])->middleware('can:customer');
 Route::get('/cart/add/{tv}', [CartController::class, 'store'])->middleware('can:customer');
 Route::get('/cart/delete/{cart}', [CartController::class, 'destroy'])->middleware('can:customer');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->middleware('can:customer');
